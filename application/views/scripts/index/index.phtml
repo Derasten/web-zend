@@ -1,0 +1,33 @@
+<table>
+    <thead>
+        <tr>
+            <th>Menú</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <a href="<?php echo $this->url(array('controller' => 'album',
+    'action' => 'index')); ?>">
+                    Ver Albumes
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="<?php echo $this->url(array('controller' => 'artista',
+                       'action' => 'index')); ?>">
+                    Ver Artistas
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="<?php echo $this->url(array('controller' => 'tema',
+                       'action' => 'index')); ?>">
+                    Ver Temas
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
