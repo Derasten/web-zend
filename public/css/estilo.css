@@ -55,3 +55,14 @@ ul.errors li{
     color: red;
     font-weight: bold;
 }
+body{
+    margin:0 auto 0 auto;
+    width: 1000px;
+    position:relative;
+    background-color: #97cadd;
+}
+
+.cabecera a img{
+    border-radius: 5px;
+    margin-top: 10px;
+}

@@ -7,7 +7,8 @@ class IndexController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         $this->initView();
-   $this->view->baseUrl = $this->_request->getBaseUrl();
+        $this->view->title ="Derasten";// Titulo de la página principal
+        $this->view->baseUrl = $this->_request->getBaseUrl();
     }
 
     public function indexAction()
