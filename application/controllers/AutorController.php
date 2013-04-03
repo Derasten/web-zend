@@ -23,7 +23,7 @@ class AutorController extends Zend_Controller_Action
     public function addAction()
     {
         // action body
-        //creo objeto de formulario
+        //creo objeto de formulario de Autor
         $form = new Application_Form_Autorform();
         //le cambio el texto al boton submit del formulario
         $form->submit->setLabel('Añadir autor');
@@ -46,21 +46,21 @@ class AutorController extends Zend_Controller_Action
             {
                 //aca ya estamos seguros de que los datos son validos
                 //ahora los extraemos como se ve abajo
-                $artista_id = $form->getValue('id');
-                $nombre = $form->getValue('nombre');
+                $autor_id  = $form->getValue('id');
+                $nombre      = $form->getValue('nombre');
                 $descripcion = $form->getValue('descripcion');
-                $email = $form->getValue('email');
-                $fecha = $form->getValue('fecha');
+                $email       = $form->getValue('email');
+                $fecha       = $form->getValue('fecha');
 
                 //como mi fecha viene en el formato dia-mes-año y Mysql
                 //guarda fechas en la forma año-mes-dia, procedo a cambiar el formato
                 //cambio formato de fecha para mysql
                 $fecha = $this->fechaMysql($fecha);
 
-                //creo objeto Album que controla la talba Album de la base de datos
-                $albums = new Application_Model_DbTable_Autor();
+                //creo objeto Album que controla la tabla Autor de la base de datos
+                $autor = new Application_Model_DbTable_Autor();
                 //llamo a la funcion agregar, con los datos que recibi del form
-                $albums->agregar($id, $nombre, $descripcion, $email, $fecha);
+                $autor->agregar($autor_id, $nombre, $descripcion, $email, $fecha);
 
                 //indico que despues de haber agregado el album,
                 //me redirija a la accion index de AlbumController, es decir,
@@ -78,15 +78,16 @@ class AutorController extends Zend_Controller_Action
             }
         }
     }
-    
+
     /**
      * cambia una fecha de formato dd-mm-yyyy
      * a formato
      * yyyy-mm-dd
      * @param <type> $fecha
      * @return <type>
+     *
      */
-    public  function fechaMysql($fecha)
+    public function fechaMysql($fecha)
     {
         $arr = split("-", $fecha);
         if (count($arr) != 3)
@@ -98,8 +99,76 @@ class AutorController extends Zend_Controller_Action
         }
     }
 
+    public function updateAction()
+    {
+        // action body
+         //titulo de la pagina
+        $this->view->title = "Modificar album";
+        $this->view->headTitle($this->view->title);
+        //creo el formulario
+        $form = new Application_Form_Autorform();
+        //le pongo otro texto al boton submit
+        $form->submit->setLabel('Modificar Autor');
+        $this->view->form = $form;
+
+        //si el usuario envia datos del form
+        if ($this->getRequest()->isPost())
+        {
+            $formData = $this->getRequest()->getPost();
+            //veo si son validos
+            if ($form->isValid($formData))
+            {
+                //extraigo sus datos
+                $id = $form->getValue('id');
+                $nombre = $form->getValue('nombre');
+                $descripcion = $form->getValue('descripcion');
+                $email = $form->getValue('email');
+                $fecha = $form->getValue('fecha');
+                //cambio formato de fecha para mysql
+                $fecha = $this->fechaMysql($fecha);
+                //creo objeto tabla Album()
+                $albums = new Application_Model_DbTable_Autor();
+                //LLAMO A FUNCION CAMBIAR, QUE HACE EL UPDATE
+                $albums->cambiar($id, $nombre, $descripcion, $email, $fecha);
+                //redirijo a accion index
+                $this->_helper->redirector('index');
+            } 
+            //si los daot sno son validos, vuelvo a mostrar el form, con 
+            //los mensajes de error
+            else
+            {
+                $form->populate($formData);
+            }
+        }
+        //SI LOS DATOS NO VIENEN POR POST, ENTONCES ESTAMOS LLAMANDO A ESTA FUNCION
+        //PARA QUE MUESTRE LOS DATOS DE UN ALBUM
+        else
+        {
+            //YO HE DECIDIDO QUE DEBE VENIR UN PARAMETRO LLAMADO ID, con el 
+            //id del album que deseo editar
+            //si vienbe un parametro llamado id le asigno su valor a $id; 
+            //si no viene, le asigno cero
+            //esto es como llamar a $_REQUEST
+            $id = $this->_getParam('id', 0);
+            //si viene algun id
+            if ($id > 0)
+            {
+               //CREO FORM
+                $albums = new Application_Model_DbTable_Autor();
+                //extraigo de la talba el album id= $id
+                $album= $albums->get($id);
+                //populate() toma los datos de $album y los coloca en el formualrio.
+                //PARA QUE ESTO FUNCIONE, EL NOMBRE DE LOS OBJETOS DEL FORM DEBE
+                //SER IGUAL AL NOMBRE DE LOS CAMPOS EN LA TABLA!!
+                $form->populate( $album);
+            }
+        }
+    }
+
 
 }
+
+
 
 
 

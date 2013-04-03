@@ -19,10 +19,10 @@ class Application_Model_DbTable_Autor extends Zend_Db_Table_Abstract
         {
             throw new Exception("Could not find row $id");
         }
-        $fecha = $row->fecha_ingreso;
+        $fecha = $row->fecha;
         $fecha = date("d-m-Y", strtotime($fecha));
 //        die($fecha);
-        $row->fecha_ingreso = $fecha;
+        $row->fecha = $fecha;
         return $row->toArray();
     }
 
