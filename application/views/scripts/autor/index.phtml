@@ -1,0 +1,42 @@
+<!--creo link para agregar un album -->
+<a href="<?php echo $this->url(array('controller' => 'autor',
+                                     'action' => 'add',
+                                     //'id' => $d->id
+                                    )); ?>">Agregar Autor</a>
+
+<!--creo una tabla para mostrar los datos-->
+<table>
+    <tr>
+        <th>Autor</th>
+        <th>E-mail</th>
+        <th>Fecha</th>
+        <th>Descripcion</th>
+        <th>Borrar</th>
+    </tr>
+<!--    recorro el arreglo de datos-->
+    <?php foreach ($this->datos as $d) : ?>
+<!--           por cada fila, muestro sus datos -->
+        <tr>
+<!--            nombre del album, con un enlace para editar el album-->
+            <td>
+                <a href="<?php echo $this->url(array('controller' => 'autor',
+            'action' => 'update', 'id' => $d->id)); ?>">
+                   <?php echo $d->nombre; ?>
+            </a>
+        </td>
+<!--                id del artista-->
+        <td><?php echo $this->escape($d->email); ?></td>
+<!--                    fecha del album-->
+        <td><?php echo $this->escape($d->fecha); ?></td>
+<!--                        descripcion-->
+        <td><?php echo $d->descripcion; ?></td>
+<!--                   enlace para borrar el album-->
+        <td>
+
+            <a href="<?php echo $this->url(array('controller' => 'autor',
+                       'action' => 'delete', 'id' => $d->id)); ?>">Delete</a>
+            </td>
+        </tr>
+<!--    fin del for-->
+    <?php endforeach; ?>
+</table>
