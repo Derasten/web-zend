@@ -1,0 +1,32 @@
+
+CREATE TABLE `der-autor` (
+  `id` int(11) NOT NULL auto_increment,
+  `nombre` varchar(50) NOT NULL,
+  `descripcion` varchar(100) default NULL,
+  `email` varchar(100) default NULL,
+  `fecha_ingreso` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `der-post` (
+  `id` int(11) NOT NULL auto_increment,
+  `autor` int(11) default NULL,
+  `categoria` varchar(50) default NULL,
+  `fecha` date default NULL,
+  `titulo` varchar(50) default NULL,
+  `texto` mediumtext default NULL,
+  `resumen` text default NULL,
+  `estado` varchar(50) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `fk_relationship_1` (`autor`),
+  CONSTRAINT `fk_relationship_1` FOREIGN KEY (`autor`) REFERENCES `der-autor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+
+
+/*!40000 ALTER TABLE `der-autor` DISABLE KEYS */;
+INSERT INTO `artista` (`id`,`nombre`,`descripcion`,`email`,`fecha_ingreso`) VALUES 
+ (1,'Derasten','Ingeniero Informático','javiermartinez@derasten.com','2013-01-01 00:00:00'),
+ (2,'Elisa','Química','elaisa17@gmail.com','2013-01-01 00:00:00'),
+ (3,'José','Ing.Tec Informático','josemanuelmartinezgarcia@gmail.com','2013-01-01 00:00:00');
+/*!40000 ALTER TABLE `artista` ENABLE KEYS */;

@@ -19,8 +19,7 @@ class IdentificacionController extends Zend_Controller_Action
         $form = new Application_Form_Loginform();
         //le cambio el texto al boton submit del formulario
         //$form->submit->setLabel('Identificarse');
-        //aisigno el formulario a la vista (la pag web que mostraremos)
-        $this->view->form = $form;
+        
         
         //los formularios envian sus datos a traves de POST
         //si vienen datos de post, es que el usuario ha enviado el formulario
@@ -38,44 +37,8 @@ class IdentificacionController extends Zend_Controller_Action
             {
                 $usuario = $form->getValue('nombre');
                 $contra = $form->getValue('contra');
-                //aca ya estamos seguros de que los datos son validos
-                //ahora los extraemos como se ve abajo
-            /*    $autor_id  = $form->getValue('id');
-                $nombre      = $form->getValue('nombre');
-                $descripcion = $form->getValue('descripcion');
-                $email       = $form->getValue('email');
-                $fecha       = $form->getValue('fecha');
-
-                //como mi fecha viene en el formato dia-mes-año y Mysql
-                //guarda fechas en la forma año-mes-dia, procedo a cambiar el formato
-                //cambio formato de fecha para mysql
-                $fecha = $this->fechaMysql($fecha);
-
-                //creo objeto Album que controla la tabla Autor de la base de datos
-                $autor = new Application_Model_DbTable_Autor();
-                //llamo a la funcion agregar, con los datos que recibi del form
-                $autor->agregar($autor_id, $nombre, $descripcion, $email, $fecha);
-
-                //indico que despues de haber agregado el album,
-                //me redirija a la accion index de AlbumController, es decir,
-                //a la pagina que me muestra el listado de albumes
-                $this->_helper->redirector('index');*/
-            }
-            //si los datos del formulario no son validos, es decir, falta ingresar
-            //algunos o el formato es incorrecto...
-            else
-            {
-                //esta funcion vuelve a cargar el formulario con los datos que se
-                //enviaron, Y ADEMAS CON LOS MENSAJES DE ERROR, los que se le mostrarán
-                //al usuario
-               // $form->populate($formData);
-            }
-        }
-        
-        
-        
-    /***************************************************************************************************************************************/
-      if (Zend_Auth::getInstance()->hasIdentity()) {
+                
+                if (Zend_Auth::getInstance()->hasIdentity()) {
         echo "already logged in as: ". Zend_Auth::getInstance()->getIdentity()->nombre;
     }else{
         $adaptadorAuth = new Zend_Auth_Adapter_DbTable(Zend_Db_Table::getDefaultAdapter());
@@ -101,11 +64,34 @@ class IdentificacionController extends Zend_Controller_Action
             echo "NO es valido";
         }
     }
+            }
+            //si los datos del formulario no son validos, es decir, falta ingresar
+            //algunos o el formato es incorrecto...
+            else
+            {
+                //esta funcion vuelve a cargar el formulario con los datos que se
+                //enviaron, Y ADEMAS CON LOS MENSAJES DE ERROR, los que se le mostrarán
+                //al usuario
+               // $form->populate($formData);
+            }
+        }
+        //aisigno el formulario a la vista (la pag web que mostraremos)
+        $this->view->form = $form;
+        
+        
+    /***************************************************************************************************************************************/
+      
     }
 
     public function logoutAction()
     {
         // action body
+        Zend_Auth::getInstance()->clearIdentity();
+        if (Zend_Auth::getInstance()->hasIdentity()) {
+        echo "already logged in as: ". Zend_Auth::getInstance()->getIdentity()->nombre;
+    }else{
+        $this->redirect('index');
+        }
     }
 
 
